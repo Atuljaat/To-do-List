@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List</title>
+  </head>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+    * {
+      color: white;
+      background-color: #313131;
+      font-family: poppins;
+    }
+    .child {
+      padding: 10px;
+      margin: 5px;
+      background-color: lightskyblue;
+      border: 1px solid black;
+      border-radius: 10px;
+      margin-top: 10px;
+      color: black;
+      width: fit-content;
+    }
+    .remove {
+      background-color: red;
+      margin-left: 20rem;
+      border-radius: 15px;
+      padding: 10px;
+    }
+    .done {
+      background-color: rgb(56, 133, 56);
+      border-radius: 15px;
+      padding: 10px;
+      margin: 10px;
+    }
+    .info {
+      background-color: lightskyblue;
+      color: rgb(223, 74, 48);
+    }
+  </style>
+  <body>
+    <div>
+      <h1>TO-DO LIST</h1>
+      <div id="countDone">TaskDone :</div>
+      <div id="countRemove">TaskRemoved :</div>
+    </div>
+    <div>
+      <input type="text" id="inpuut" autocomplete="off" />
+      <button id="sumit">Submit</button>
+    </div>
+    <div id="list"></div>
+  </body>
+  <script>
+    let input = document.querySelector("#inpuut");
+    let sumit = document.querySelector("#sumit");
+    let list = document.querySelector("#list");
+    let removeCounter = document.querySelector("#countRemove");
+    let doneCounter = document.querySelector('#countDone')
+    let removeNO = 0;
+    let doneNO = 0;
+    function makelist() {
+      let value = String(input.value);
+      if (value === "") {
+        alert("abe kuch type to kar");
+      } else {
+        let saveText = localStorage.setItem('task', value) // this
+        let createTask = document.createElement("div");
+        let setTask = localStorage.getItem('task')
+        createTask.innerText = setTask;
+        createTask.setAttribute("class", "child");
+        list.appendChild(createTask);
+        input.value = "";
+
+        CreateRemove();
+        CreateDone();
+        addDate();
+        addTime();
+
+        function CreateRemove() {
+          let removeBUTTON = document.createElement("button");
+          removeBUTTON.innerText = "Remove";
+          createTask.appendChild(removeBUTTON);
+          removeBUTTON.setAttribute("class", "remove");
+          removeBUTTON.addEventListener("click", doRemove);
+        }
+        function CreateDone() {
+          let createBUTTON = document.createElement("button");
+          createBUTTON.innerText = "Done";
+          createTask.appendChild(createBUTTON);
+          createBUTTON.setAttribute("class", "done");
+          createBUTTON.addEventListener("click", doDone);
+        }
+
+        function doRemove() {
+          createTask.remove();
+          removeNO++;
+          removeCounter.innerText = ` TaskRemoved :  ${removeNO}`;
+        }
+
+        function doDone() {
+          createTask.remove();
+          doneNO++;
+          doneCounter.innerText = `TaskDone : ${doneNO}`
+        }
+
+        function addDate() {
+          let date = new Date().toLocaleDateString();
+          let dateArea = document.createElement("div");
+          dateArea.innerText = date;
+          createTask.appendChild(dateArea);
+          dateArea.setAttribute("class", "info");
+        }
+
+        function addTime() {
+          let time = new Date().toLocaleTimeString();
+          let timeArea = document.createElement("div");
+          timeArea.innerText = time;
+          createTask.appendChild(timeArea);
+          timeArea.setAttribute("class", "info");
+        }
+      }
+    }
+
+    sumit.addEventListener("click", makelist);
+  </script>
+</html>
